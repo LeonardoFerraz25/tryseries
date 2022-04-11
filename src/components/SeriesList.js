@@ -1,6 +1,7 @@
 import React from "react";
 import SerieCard from "./SerieCard";
 import data from "../data"
+import Form from "./Form";
 
 class SeriesList extends React.Component {
 
@@ -19,11 +20,20 @@ class SeriesList extends React.Component {
     })
   }
 
+  addSeries = (newSeries) => {
+    console.log(newSeries);
+    this.setState((estadoAnterior) =>({
+      seriesData: [...estadoAnterior.seriesData, newSeries],
+    }));
+  }
+
   render() {
     const { filterName, seriesData } = this.state;
 
     const series = seriesData.filter(iten => {
-      return iten.name.includes(filterName)
+      const nameLower = iten.name.toLowerCase();
+      const filterNameLower = filterName.toLowerCase();
+      return nameLower.includes(filterNameLower)
     })
 
     return(
@@ -35,6 +45,7 @@ class SeriesList extends React.Component {
         placeholder="pesquise uma serie"
         />
         <div className="container-series">{series.map(iten => <SerieCard key={iten.id} serie={iten} />)}</div>
+        <Form addSeries={this.addSeries}/>
       </section>
     )
   }
